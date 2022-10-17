@@ -1,4 +1,4 @@
-# Native-database-client-boilerplate
+# Gorm-client-boilerplate
 A starter project with native database client
 
 Quickstart service integrates different tools you may need.
