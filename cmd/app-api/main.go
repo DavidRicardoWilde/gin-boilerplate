@@ -12,13 +12,18 @@ import (
 func main() {
 	// Init gin engine
 	gins.Init()
+	// Load api groups
+	gins.LoadApiGroups()
+	// Load file system
+	//gins.LoadFileSystem()
 
 	// Init http server, set your custom http server config
 	server := http.Server{
-		Addr:         ":8080",
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Minute,
-		Handler:      gins.GinEngine,
+		Addr:           ":8080",
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Minute,
+		Handler:        gins.GinEngine,
+		MaxHeaderBytes: 1 << 20,
 	}
 	// server started
 	go func() {
