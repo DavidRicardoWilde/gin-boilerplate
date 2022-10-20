@@ -1,5 +1,5 @@
-# viper-logger-tool-boilerplate
-A starter project with viper.
+# gin-boilerplate
+A starter project with Golang and Gin framework.
 
 Quickstart web service integrates different tools you may need.
 Do not worry about import too many redundant tools into the project that make project too bloated,
