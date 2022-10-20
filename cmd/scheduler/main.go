@@ -2,9 +2,9 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"gin-boilerplate/tasks"
 	"gin-boilerplate/tasks/examples"
+	"gin-boilerplate/utils/loggers"
 	"github.com/robfig/cron/v3"
 	"os"
 	"os/signal"
@@ -43,6 +43,10 @@ func taskWrapper(task tasks.ITask) func() {
 }
 
 func main() {
+	// Init log system, set your customized logger config
+	loggers.InitWebServerLog()
+
+	// Init cron
 	cronJob := cron.New()
 
 	// give me a Cron Object with a UTC location time zone and using logrus instead default logger interface, and custom job wrapper
@@ -58,10 +62,10 @@ func main() {
 	//jobId, err := cronJob.AddFunc("@daily", taskWrapper(new(examples.ExampleTask)))
 
 	if err != nil {
-		// error log
+		loggers.ScheduleLog.WithError(err).Errorln("error when add job")
 	}
 
-	fmt.Sprintf("Example task added! Job id: %d", jobId)
+	loggers.ScheduleLog.Infof("Example task added! Job id: %d \n", jobId)
 	cronJob.Start()
 
 	// quit server gracefully

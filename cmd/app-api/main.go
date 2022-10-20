@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	gins "gin-boilerplate/gin-sever"
+	"gin-boilerplate/utils/loggers"
 	"net/http"
 	"os"
 	"os/signal"
@@ -10,6 +11,9 @@ import (
 )
 
 func main() {
+	// Init log system, set your customized logger config
+	loggers.InitScheduleLog()
+
 	// Init gin engine
 	gins.Init()
 	// Load api groups
@@ -30,7 +34,7 @@ func main() {
 		// Server listening at server.Addr
 		err := server.ListenAndServe()
 		if err != nil {
-			// Server listen at %s failed
+			loggers.Log.WithError(err).Errorf("Web server started failed")
 		}
 	}()
 
