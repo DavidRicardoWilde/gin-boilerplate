@@ -44,8 +44,19 @@ func taskWrapper(task tasks.ITask) func() {
 
 func main() {
 	cronJob := cron.New()
+
+	// give me a Cron Object with a UTC location time zone and using logrus instead default logger interface, and custom job wrapper
+	//cron.New(cron.WithLocation(time.UTC))
+
 	// jobs
 	jobId, err := cronJob.AddFunc("@every 5s", taskWrapper(new(examples.ExampleTask)))
+	// create a job which run at every day 0:00:00
+	//jobId, err := cronJob.AddFunc("0 0 0 * * *", taskWrapper(new(examples.ExampleTask)))
+	// create a job which run at daily 1 clock
+	//jobId, err := cronJob.AddFunc("0 0 1 * * *", taskWrapper(new(examples.ExampleTask)))
+	// create a job which run at daily 24 clock
+	//jobId, err := cronJob.AddFunc("@daily", taskWrapper(new(examples.ExampleTask)))
+
 	if err != nil {
 		// error log
 	}

@@ -10,5 +10,5 @@ func (t *ExampleTask) Name() string {
 }
 
 func (t *ExampleTask) Exec() {
-	fmt.Printf("example task")
+	fmt.Println("example task")
 }
