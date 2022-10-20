@@ -1,0 +1,24 @@
+[app]
+name = 'hd-wallet-saas'
+version = '0.1.0-alpha'
+description = 'A SAAS for managing HD wallets service'
+environment = 'production'
+
+[api-server]
+base-path = '/api'
+server_port = 8081
+cors = true
+
+[database-config]
+host = ''
+port = ''
+user = ''
+password = ''
+database-name = ''
+driver = ''
+driver-version = ''
+
+[gorm]
+using-exist-db = false
+custom-gorm-cfg = true
+
