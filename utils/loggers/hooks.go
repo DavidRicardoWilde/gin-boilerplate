@@ -73,6 +73,14 @@ func RotateHook(basePath string, log *logrus.Logger) *logrus.Logger {
 		rotateLogs.WithRotationTime(24*time.Hour),
 	)
 
+	traceFilePath := basePath + "/trace.logs"
+	traceWriter, _ := rotateLogs.New(
+		traceFilePath+".%Y%m%d",
+		rotateLogs.WithLinkName(traceFilePath),
+		rotateLogs.WithMaxAge(7*24*time.Hour),
+		rotateLogs.WithRotationTime(24*time.Hour),
+	)
+
 	writeMap := lfshook.WriterMap{
 		logrus.InfoLevel:  infoWriter,
 		logrus.FatalLevel: fatalWriter,
@@ -80,6 +88,7 @@ func RotateHook(basePath string, log *logrus.Logger) *logrus.Logger {
 		logrus.WarnLevel:  warningWriter,
 		logrus.ErrorLevel: errWriter,
 		logrus.PanicLevel: panicWriter,
+		logrus.TraceLevel: traceWriter,
 	}
 	log.SetReportCaller(true)
 	log.AddHook(lfshook.NewHook(writeMap, &CustomFormatter{}))

@@ -50,7 +50,7 @@ func (m *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 func logInit(group string) *logrus.Logger {
 	log := logrus.New()
 	log = RotateHook(group, log)
-	log.SetLevel(logrus.DebugLevel) // Set the logs level which will be output.
+	log.SetLevel(logrus.TraceLevel) // Set the logs level which will be output.
 
 	return log
 }
