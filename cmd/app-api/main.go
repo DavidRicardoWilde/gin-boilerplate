@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	gins "gin-boilerplate/gin-sever"
+	"gin-boilerplate/utils/configs"
 	"gin-boilerplate/utils/loggers"
 	"net/http"
 	"os"
@@ -11,6 +12,9 @@ import (
 )
 
 func main() {
+	// Init Configs
+	configs.AllConfigInit()
+
 	// Init log system, set your customized logger config
 	loggers.InitScheduleLog()
 
