@@ -2,9 +2,12 @@ package dbs
 
 import (
 	"database/sql"
+	"gin-boilerplate/utils/dbs/gorms"
+	"gorm.io/gorm"
 )
 
-var NativeDB *sql.DB
+var NativeClient *sql.DB
+var GormClient *gorm.DB
 
 func InitNativeDBClient() *sql.DB {
 	//dbCfg := configs.GetGlobalDbConfig()
@@ -16,4 +19,10 @@ func InitNativeDBClient() *sql.DB {
 	}
 
 	return db
+}
+
+func InitGormClient() {
+	//usingExistDb := configs.GetBoolByKey("gorm.using-exist-db")
+	//usingCustomGormCfg := configs.GetBoolByKey("gorm.custom-gorm-cfg")
+	gorms.InitGormClient(true, true)
 }
