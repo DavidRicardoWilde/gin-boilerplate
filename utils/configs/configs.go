@@ -82,11 +82,11 @@ func initDbConfig() *configs.DbConfig {
 
 	dbCfg = &configs.DbConfig{
 		Driver: cfg["driver"].(string),
-		Usr:    cfg["usr"].(string),
-		Pwd:    cfg["pwd"].(string),
+		Usr:    cfg["user"].(string),
+		Pwd:    cfg["password"].(string),
 		Host:   cfg["host"].(string),
 		Port:   cfg["port"].(string),
-		DbName: cfg["db-name"].(string),
+		DbName: cfg["database-name"].(string),
 	}
 
 	return dbCfg
