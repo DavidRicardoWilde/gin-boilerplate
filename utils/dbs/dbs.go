@@ -31,6 +31,7 @@ func InitGormClient() {
 	usingExistDb := configs.GetBoolByKey("gorm.using-exist-db")
 	usingCustomGormCfg := configs.GetBoolByKey("gorm.custom-gorm-cfg")
 	if usingExistDb {
+		NativeClient = initNativeDBClient()
 		GormClient = gorms.InitGormClient(usingCustomGormCfg, NativeClient)
 	} else {
 		GormClient = gorms.InitSimpleClient(usingCustomGormCfg)
