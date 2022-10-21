@@ -3,6 +3,7 @@ package loggers
 import (
 	"bytes"
 	"fmt"
+	"gin-boilerplate/utils/configs"
 	"github.com/sirupsen/logrus"
 	"path/filepath"
 	"time"
@@ -50,7 +51,21 @@ func (m *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 func logInit(group string) *logrus.Logger {
 	log := logrus.New()
 	log = RotateHook(group, log)
-	log.SetLevel(logrus.TraceLevel) // Set the logs level which will be output.
+	log.SetLevel(getLogLevel()) // Set the logs level which will be output.
+
+	log.Infof("Log level: %s", configs.GetGlobalAppConfig().LogLevel)
 
 	return log
+}
+
+func getLogLevel() logrus.Level {
+	if configs.GetGlobalAppConfig().LogLevel == "dev" {
+		return logrus.DebugLevel
+	}
+
+	if configs.GetGlobalAppConfig().LogLevel == "prod" {
+		return logrus.DebugLevel
+	}
+
+	return logrus.InfoLevel
 }

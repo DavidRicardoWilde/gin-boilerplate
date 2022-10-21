@@ -12,7 +12,7 @@ func AllConfigInit() {
 	// gin engine web server config
 	globalAppConfig = initAppConfig()
 	globalApiServerConfig = initApiServerConfig()
-	globalDbConfig = initDbConfig()
+	//globalDbConfig = initDbConfig()
 
 	// database config
 	// redis config
@@ -45,6 +45,7 @@ func initAppConfig() *configs.AppConfig {
 		Version:     cfg["version"],
 		Description: cfg["description"],
 		Environment: cfg["environment"],
+		LogLevel:    cfg["log-level"],
 	}
 
 	return appCfg
@@ -62,7 +63,7 @@ func initApiServerConfig() *configs.ApiServerConfig {
 
 	apiServerCfg = &configs.ApiServerConfig{
 		BasePath:   cfg["base-path"].(string),
-		ServerPort: cfg["server-port"].(int),
+		ServerPort: cfg["server-port"].(string),
 		Cors:       cfg["cors"].(bool),
 	}
 

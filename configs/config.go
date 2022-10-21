@@ -7,11 +7,12 @@ type AppConfig struct {
 	Version     string `yaml:"version" toml:"version" json:"version"`
 	Description string `yaml:"description" toml:"description" json:"description"`
 	Environment string `yaml:"environment" toml:"environment" json:"environment"`
+	LogLevel    string `yaml:"log-level" toml:"log-level" json:"log-level"`
 }
 
 type ApiServerConfig struct {
 	BasePath   string `yaml:"base-path" toml:"base-path" json:"basePath"`
-	ServerPort int    `yaml:"server-port" toml:"base-path" json:"serverPort"`
+	ServerPort string `yaml:"server-port" toml:"base-path" json:"serverPort"`
 	Cors       bool   `yaml:"cors" toml:"cors" json:"cors"`
 }
 
@@ -56,7 +57,7 @@ func init() {
 // globalConfigInit loads global config from local which is used for all environments
 func globalConfigInit() {
 	GlobalConfig = viper.New()
-	GlobalConfig.AddConfigPath("./config")
+	GlobalConfig.AddConfigPath("./configs")
 	GlobalConfig.SetConfigName("config")
 	GlobalConfig.SetConfigType("toml")
 	err := GlobalConfig.ReadInConfig()
@@ -73,7 +74,7 @@ func globalConfigInit() {
 // localConfigInit loads local config from local which is used for private development environment
 func localConfigInit() {
 	LocalConfig = viper.New()
-	LocalConfig.AddConfigPath("./config")
+	LocalConfig.AddConfigPath("./configs")
 	LocalConfig.SetConfigName("local")
 	LocalConfig.SetConfigType("yaml")
 

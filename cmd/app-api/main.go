@@ -4,6 +4,7 @@ import (
 	"context"
 	gins "gin-boilerplate/gin-sever"
 	"gin-boilerplate/utils/configs"
+	"gin-boilerplate/utils/dbs"
 	"gin-boilerplate/utils/loggers"
 	"net/http"
 	"os"
@@ -16,7 +17,10 @@ func main() {
 	configs.AllConfigInit()
 
 	// Init log system, set your customized logger config
-	loggers.InitScheduleLog()
+	loggers.InitWebServerLog()
+
+	// Init gorm database client
+	dbs.InitGormClient()
 
 	// Init gin engine
 	gins.Init()

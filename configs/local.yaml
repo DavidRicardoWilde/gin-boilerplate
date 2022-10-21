@@ -5,10 +5,11 @@ app:
   version: '0.1.0-alpha'
   description: 'A SAAS for managing HD wallets service'
   environment: 'development'
+  log-level: 'dev'
 
 api-server:
   base-path: '/api'
-  server_port: '8081'
+  server-port: '8081'
   cors: true
 
 database-config:

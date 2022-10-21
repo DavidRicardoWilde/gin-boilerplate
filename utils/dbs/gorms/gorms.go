@@ -1,51 +1,45 @@
 package gorms
 
 import (
-	"context"
-	"gin-boilerplate/utils/dbs"
+	"database/sql"
+	"gin-boilerplate/utils/loggers"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
 	"time"
 )
 
-var GormDBs *gorm.DB
-
 // InitSimpleClient generates a simple gorm client
-func InitSimpleClient(cfg *gorm.Config) {
+func InitSimpleClient(cfg *gorm.Config) *gorm.DB {
 	//dbCfg := configs.GetGlobalDbConfig()
 	//dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4", dbCfg.Usr, dbCfg.Pwd, dbCfg.Host, dbCfg.Port, dbCfg.DbName)
 	dsn := "root:pawword@tcp(127.0.0.1:3306)/test?charset=utf8mb4"
-	gormDB, err := gorm.Open(mysql.Open(dsn), cfg)
+	client, err := gorm.Open(mysql.Open(dsn), cfg)
 
 	if err != nil {
-		//logs.Log.Error("gorm open error: ", err)
+		loggers.Log.Error("gorm open error: ", err)
 	}
 
-	GormDBs = gormDB
-}
+	return client
 
-func WithContext(ctx context.Context) *gorm.DB {
-	return GormDBs.WithContext(ctx)
 }
 
 // InitGormClient generates a gorm client.
 // If existingDb is true, it will use the existing db connection. Or it will create a new db connection.
-func InitGormClient(existingDb bool, customCfg bool) *gorm.DB {
+func InitGormClient(existingDb bool, customCfg bool, nativeClient *sql.DB) *gorm.DB {
 	if existingDb {
-		InitSimpleClient(getGormConfig(customCfg))
+		client := InitSimpleClient(getGormConfig(customCfg))
+		return client
 	} else {
-		gormClient, err := gorm.Open(mysql.New(mysql.Config{
-			Conn: dbs.NativeClient,
+		client, err := gorm.Open(mysql.New(mysql.Config{
+			Conn: nativeClient,
 		}), getGormConfig(customCfg))
 		if err != nil {
-			//logs.Log.Panicln("Init gormClient failed!")
+			loggers.Log.Panicln("Init gormClient failed!")
 		}
 
-		dbs.GormClient = gormClient
+		return client
 	}
-
-	return nil
 }
 
 // GetGormConfig returns custom config if customCfg is true, or returns default config.
