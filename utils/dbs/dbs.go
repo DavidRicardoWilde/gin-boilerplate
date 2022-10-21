@@ -31,3 +31,11 @@ func InitGormClient() {
 func GormWithContext(ctx context.Context) *gorm.DB {
 	return GormClient.WithContext(ctx)
 }
+
+// WithCustomConnectionPool sets custom connection pool config
+func WithCustomConnectionPool(db *sql.DB) {
+	db.SetConnMaxLifetime(0)
+	db.SetMaxOpenConns(1000)
+	db.SetConnMaxIdleTime(10)
+	//db.SetConnMaxIdleTime()
+}
