@@ -3,6 +3,7 @@ package dbs
 import (
 	"context"
 	"database/sql"
+	"gin-boilerplate/utils/configs"
 	"gin-boilerplate/utils/dbs/gorms"
 	"gorm.io/gorm"
 )
@@ -27,14 +28,12 @@ func initNativeDBClient() *sql.DB {
 }
 
 func InitGormClient() {
-	//usingExistDb := configs.GetBoolByKey("gorm.using-exist-db")
-	usingExistDb := false
-	//usingCustomGormCfg := configs.GetBoolByKey("gorm.custom-gorm-cfg")
+	usingExistDb := configs.GetBoolByKey("gorm.using-exist-db")
+	usingCustomGormCfg := configs.GetBoolByKey("gorm.custom-gorm-cfg")
 	if usingExistDb {
-		NativeClient = initNativeDBClient()
-		GormClient = gorms.InitGormClient(false, false, NativeClient)
+		GormClient = gorms.InitGormClient(usingCustomGormCfg, NativeClient)
 	} else {
-		GormClient = gorms.InitGormClient(false, false, nil)
+		GormClient = gorms.InitSimpleClient(usingCustomGormCfg)
 	}
 
 }

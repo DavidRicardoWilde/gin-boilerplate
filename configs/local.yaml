@@ -14,7 +14,7 @@ api-server:
 
 database-config:
   host: 'localhost'
-  port: 33062
+  port: '33062'
   user: 'root'
   password: 'root'
   database-name: 'db_hd_wallet_saas'

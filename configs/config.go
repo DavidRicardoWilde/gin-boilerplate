@@ -17,12 +17,12 @@ type ApiServerConfig struct {
 }
 
 type DbConfig struct {
-	Driver string
-	Usr    string
-	Pwd    string
-	Host   string
-	Port   int
-	DbName string
+	Driver string `yaml:"driver" toml:"driver" json:"driver"`
+	Usr    string `yaml:"user" toml:"user" json:"user"`
+	Pwd    string `yaml:"password" toml:"password" json:"password"`
+	Host   string `yaml:"host" toml:"host" json:"host"`
+	Port   string `yaml:"port" toml:"port" json:"port"`
+	DbName string `yaml:"database-name" toml:"database-name" json:"databaseName"`
 }
 
 var (

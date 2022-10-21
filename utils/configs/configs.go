@@ -12,7 +12,7 @@ func AllConfigInit() {
 	// gin engine web server config
 	globalAppConfig = initAppConfig()
 	globalApiServerConfig = initApiServerConfig()
-	//globalDbConfig = initDbConfig()
+	globalDbConfig = initDbConfig()
 
 	// database config
 	// redis config
@@ -22,7 +22,7 @@ func GetGlobalAppConfig() *configs.AppConfig {
 	return globalAppConfig
 }
 
-func GetGlobalApoServerCfg() *configs.ApiServerConfig {
+func GetGlobalAppServerCfg() *configs.ApiServerConfig {
 	return globalApiServerConfig
 }
 
@@ -75,9 +75,9 @@ func initDbConfig() *configs.DbConfig {
 	var cfg map[string]interface{}
 
 	if configs.Local {
-		cfg = configs.LocalConfig.GetStringMap("db")
+		cfg = configs.LocalConfig.GetStringMap("database-config")
 	} else {
-		cfg = configs.GlobalConfig.GetStringMap("db")
+		cfg = configs.GlobalConfig.GetStringMap("database-config")
 	}
 
 	dbCfg = &configs.DbConfig{
@@ -85,7 +85,7 @@ func initDbConfig() *configs.DbConfig {
 		Usr:    cfg["usr"].(string),
 		Pwd:    cfg["pwd"].(string),
 		Host:   cfg["host"].(string),
-		Port:   cfg["port"].(int),
+		Port:   cfg["port"].(string),
 		DbName: cfg["db-name"].(string),
 	}
 
