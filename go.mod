@@ -80,7 +80,10 @@ require (
 	gorm.io/plugin/dbresolver v1.3.0 // indirect
 )
 
-require github.com/urfave/cli/v2 v2.20.3
+require (
+	github.com/gin-contrib/pprof v1.4.0
+	github.com/urfave/cli/v2 v2.20.3
+)
 
 require (
 	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
