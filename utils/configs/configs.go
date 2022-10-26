@@ -8,13 +8,12 @@ var (
 	globalDbConfig        *configs.DbConfig
 )
 
-func AllConfigInit() {
+func InitAllConfigs() {
 	// gin engine web server config
 	globalAppConfig = initAppConfig()
 	globalApiServerConfig = initApiServerConfig()
 	globalDbConfig = initDbConfig()
 
-	// database config
 	// redis config
 }
 
@@ -34,11 +33,7 @@ func initAppConfig() *configs.AppConfig {
 	var appCfg *configs.AppConfig
 	var cfg map[string]string
 
-	if configs.Local {
-		cfg = configs.LocalConfig.GetStringMapString("app")
-	} else {
-		cfg = configs.GlobalConfig.GetStringMapString("app")
-	}
+	cfg = configs.GlobalConfig.GetStringMapString("app")
 
 	appCfg = &configs.AppConfig{
 		Name:        cfg["name"],
@@ -55,11 +50,7 @@ func initApiServerConfig() *configs.ApiServerConfig {
 	var apiServerCfg *configs.ApiServerConfig
 	var cfg map[string]interface{}
 
-	if configs.Local {
-		cfg = configs.LocalConfig.GetStringMap("api-server")
-	} else {
-		cfg = configs.GlobalConfig.GetStringMap("api-server")
-	}
+	cfg = configs.GlobalConfig.GetStringMap("api-server")
 
 	apiServerCfg = &configs.ApiServerConfig{
 		BasePath:   cfg["base-path"].(string),
@@ -74,11 +65,7 @@ func initDbConfig() *configs.DbConfig {
 	var dbCfg *configs.DbConfig
 	var cfg map[string]interface{}
 
-	if configs.Local {
-		cfg = configs.LocalConfig.GetStringMap("database-config")
-	} else {
-		cfg = configs.GlobalConfig.GetStringMap("database-config")
-	}
+	cfg = configs.GlobalConfig.GetStringMap("database-config")
 
 	dbCfg = &configs.DbConfig{
 		Driver: cfg["driver"].(string),
@@ -87,15 +74,12 @@ func initDbConfig() *configs.DbConfig {
 		Host:   cfg["host"].(string),
 		Port:   cfg["port"].(string),
 		DbName: cfg["database-name"].(string),
+		Client: cfg["client"].(string),
 	}
 
 	return dbCfg
 }
 
 func GetBoolByKey(key string) bool {
-	if configs.Local {
-		return configs.LocalConfig.GetBool(key)
-	} else {
-		return configs.GlobalConfig.GetBool(key)
-	}
+	return configs.GlobalConfig.GetBool(key)
 }

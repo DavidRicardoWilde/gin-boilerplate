@@ -3,23 +3,23 @@ package dbs
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"gin-boilerplate/utils/configs"
 	"gin-boilerplate/utils/dbs/gorms"
 	"gorm.io/gorm"
 )
 
-var NativeClient *sql.DB
-var GormClient *gorm.DB
+var nativeClient *sql.DB
+var gormClient *gorm.DB
 
 func InitNativeDBClient() {
-	NativeClient = initNativeDBClient()
+	nativeClient = initNativeDBClient()
 }
 
 func initNativeDBClient() *sql.DB {
-	//dbCfg := configs.GetGlobalDbConfig()
-	//dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4", dbCfg.Usr, dbCfg.Pwd, dbCfg.Host, dbCfg.Port, dbCfg.DbName)
-	//db, err := sql.Open(dbCfg.Driver, dsn)
-	dbClient, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/test?charset=utf8mb4")
+	dbCfg := configs.GetGlobalDbConfig()
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4", dbCfg.Usr, dbCfg.Pwd, dbCfg.Host, dbCfg.Port, dbCfg.DbName)
+	dbClient, err := sql.Open(dbCfg.Driver, dsn)
 	if err != nil {
 		panic(err)
 	}
@@ -31,12 +31,11 @@ func InitGormClient() {
 	usingExistDb := configs.GetBoolByKey("gorm.using-exist-db")
 	usingCustomGormCfg := configs.GetBoolByKey("gorm.custom-gorm-cfg")
 	if usingExistDb {
-		NativeClient = initNativeDBClient()
-		GormClient = gorms.InitGormClient(usingCustomGormCfg, NativeClient)
+		nativeClient = initNativeDBClient()
+		gormClient = gorms.InitGormClient(usingCustomGormCfg, nativeClient)
 	} else {
-		GormClient = gorms.InitSimpleClient(usingCustomGormCfg)
+		gormClient = gorms.InitSimpleClient(usingCustomGormCfg)
 	}
-
 }
 
 // WithCustomConnectionPool sets custom connection pool config
@@ -48,5 +47,23 @@ func WithCustomConnectionPool(db *sql.DB) {
 }
 
 func GormWithContext(ctx context.Context) *gorm.DB {
-	return GormClient.WithContext(ctx)
+	return gormClient.WithContext(ctx)
+}
+
+// InitGlobalDBClient initializes database client, it will switch to use different database client according to the config
+func InitGlobalDBClient() {
+	switch configs.GetGlobalDbConfig().Client {
+	case "native":
+		InitNativeDBClient()
+	case "gorm":
+		InitGormClient()
+	}
+}
+
+func GormClient() *gorm.DB {
+	return gormClient
+}
+
+func NativeClient() *sql.DB {
+	return nativeClient
 }

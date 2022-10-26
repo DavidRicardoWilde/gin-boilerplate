@@ -9,15 +9,24 @@ import (
 	"time"
 )
 
-var Log *logrus.Logger
+var ApiLog *logrus.Logger
 var ScheduleLog *logrus.Logger
+var logPath string
 
-func InitWebServerLog() {
-	Log = logInit("logs/web")
+func init() {
+	logPath = "logs/"
 }
 
+// InitApiServerLog initializes the log group for api server
+func InitApiServerLog() {
+	groupName := "api"
+	ApiLog = logInit(groupName)
+}
+
+// InitScheduleLog initializes the log group for schedule
 func InitScheduleLog() {
-	ScheduleLog = logInit("logs/schedule")
+	groupName := "schedule"
+	ScheduleLog = logInit(groupName)
 }
 
 type CustomFormatter struct{}
@@ -31,7 +40,8 @@ func (m *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 		b = &bytes.Buffer{}
 	}
 
-	entry.Time = entry.Time.In(time.UTC)
+	entry.Time = entry.Time.In(time.UTC) // It is recommended to use UTC time zone instead of Local, it is also possible to use the specified time zone
+	// example of using other time zone: PST, CST and Local
 	//entry.Time = entry.Time.In(time.FixedZone("PST", -8*60*60))
 	//entry.Time = entry.Time.In(time.FixedZone("CST", 8*60*60))
 	//entry.Time = entry.Time.In(time.Local)
@@ -48,9 +58,10 @@ func (m *CustomFormatter) Format(entry *logrus.Entry) ([]byte, error) {
 	return b.Bytes(), nil
 }
 
-func logInit(group string) *logrus.Logger {
+// logInit initializes and sets log config including log level, log files path and hooks.
+func logInit(groupName string) *logrus.Logger {
 	log := logrus.New()
-	log = RotateHook(group, log)
+	log = RotateHook(logPath+groupName, log)
 	log.SetLevel(getLogLevel()) // Set the logs level which will be output.
 
 	log.Infof("Log level: %s", configs.GetGlobalAppConfig().LogLevel)
@@ -58,14 +69,19 @@ func logInit(group string) *logrus.Logger {
 	return log
 }
 
+// getLogLevel returns the log level according to the configuration file
 func getLogLevel() logrus.Level {
-	if configs.GetGlobalAppConfig().LogLevel == "dev" {
+	// TODO: switch to switch case
+	switch configs.GetGlobalAppConfig().LogLevel {
+	case "debug":
 		return logrus.DebugLevel
+	case "info":
+		return logrus.InfoLevel
+	case "warn":
+		return logrus.WarnLevel
+	case "error":
+		return logrus.ErrorLevel
+	default:
+		return logrus.InfoLevel
 	}
-
-	if configs.GetGlobalAppConfig().LogLevel == "prod" {
-		return logrus.DebugLevel
-	}
-
-	return logrus.InfoLevel
 }

@@ -9,10 +9,11 @@ app:
 
 api-server:
   base-path: '/api'
-  server-port: '8081'
+  server-port: ':8081'
   cors: true
 
 database-config:
+  client: 'gorm'
   host: 'localhost'
   port: '33062'
   user: 'root'

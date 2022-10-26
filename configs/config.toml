@@ -11,6 +11,7 @@ server-port = '8081'
 cors = true
 
 [database-config]
+client = ''
 host = ''
 port = ''
 user = ''

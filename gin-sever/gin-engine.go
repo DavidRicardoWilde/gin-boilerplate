@@ -35,7 +35,7 @@ func LoadApiGroups() {
 	routers.LoadExampleApiGroup(baseUri, GinEngine)
 }
 
-func LoadFileSystem() {
+func LoadFileServer() {
 	GinEngine.Static("/assets", "./assets")
 	GinEngine.StaticFS("/more_static", http.Dir("my_file_system"))
 	GinEngine.StaticFile("/favicon.ico", "./resources/favicon.ico")

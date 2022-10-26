@@ -14,12 +14,12 @@ import (
 // InitSimpleClient generates a simple gorm client
 func InitSimpleClient(usingCustomConfig bool) *gorm.DB {
 	dbCfg := configs.GetGlobalDbConfig()
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4", dbCfg.Usr, dbCfg.Pwd, dbCfg.Host, dbCfg.Port, dbCfg.DbName)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4", dbCfg.Usr, dbCfg.Pwd, dbCfg.Host, dbCfg.Port, dbCfg.DbName)
 	//dsn := "root:pawword@tcp(127.0.0.1:3306)/test?charset=utf8mb4"
 	client, err := gorm.Open(mysql.Open(dsn), getGormConfig(usingCustomConfig))
 
 	if err != nil {
-		loggers.Log.Error("gorm open error: ", err)
+		loggers.ApiLog.Error("gorm open error: ", err)
 	}
 
 	return client
@@ -32,7 +32,7 @@ func InitGormClient(customCfg bool, nativeClient *sql.DB) *gorm.DB {
 		Conn: nativeClient,
 	}), getGormConfig(customCfg))
 	if err != nil {
-		loggers.Log.Panicln("Init gormClient failed!")
+		loggers.ApiLog.Panicln("Init gormClient failed!")
 	}
 
 	return client
@@ -47,7 +47,7 @@ func getGormConfig(usingCustomConfig bool) *gorm.Config {
 				//return time.Now().Local()
 				return time.Now().UTC() // using UTC time
 			},
-			//Logger: logger.New(log.New(logs.Log.Out, "\r\n", log.LUTC), logger.Config{
+			//Logger: logger.New(log.New(logs.ApiLog.Out, "\r\n", log.LUTC), logger.Config{
 			//	LogLevel: logger.Error,
 			//}),
 			NamingStrategy: schema.NamingStrategy{
