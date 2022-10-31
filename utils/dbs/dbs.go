@@ -7,10 +7,13 @@ import (
 	"gin-boilerplate/utils/configs"
 	"gin-boilerplate/utils/dbs/gorms"
 	"gorm.io/gorm"
+	"time"
 )
 
-var nativeClient *sql.DB
-var gormClient *gorm.DB
+var (
+	nativeClient *sql.DB
+	gormClient   *gorm.DB
+)
 
 func InitNativeDBClient() {
 	nativeClient = initNativeDBClient()
@@ -40,10 +43,9 @@ func InitGormClient() {
 
 // WithCustomConnectionPool sets custom connection pool config
 func WithCustomConnectionPool(db *sql.DB) {
-	db.SetConnMaxLifetime(0)
+	db.SetConnMaxLifetime(0 * time.Second)
 	db.SetMaxOpenConns(1000)
-	db.SetConnMaxIdleTime(10)
-	//db.SetConnMaxIdleTime()
+	db.SetConnMaxIdleTime(10 * time.Minute)
 }
 
 func GormWithContext(ctx context.Context) *gorm.DB {
@@ -60,10 +62,12 @@ func InitGlobalDBClient() {
 	}
 }
 
+// GormClient is a get function
 func GormClient() *gorm.DB {
 	return gormClient
 }
 
+// NativeClient is a get function
 func NativeClient() *sql.DB {
 	return nativeClient
 }

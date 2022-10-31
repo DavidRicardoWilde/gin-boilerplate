@@ -60,6 +60,3 @@ func getGormConfig(usingCustomConfig bool) *gorm.Config {
 		return &gorm.Config{}
 	}
 }
-
-//func InitClient(opt gorm.Option) *gorm.DB {
-//}
