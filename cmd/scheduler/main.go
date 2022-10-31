@@ -61,7 +61,7 @@ func main() {
 		// error log
 	}
 
-	fmt.Sprintf("Example task added! Job id: %d", jobId)
+	fmt.Printf("Example task added! Job id: %d", jobId)
 	cronJob.Start()
 
 	// quit server gracefully
