@@ -71,7 +71,6 @@ func logInit(groupName string) *logrus.Logger {
 
 // getLogLevel returns the log level according to the configuration file
 func getLogLevel() logrus.Level {
-	// TODO: switch to switch case
 	switch configs.GetGlobalAppConfig().LogLevel {
 	case "debug":
 		return logrus.DebugLevel
