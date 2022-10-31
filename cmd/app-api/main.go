@@ -15,7 +15,7 @@ func main() {
 	// Load api groups
 	gins.LoadApiGroups()
 	// Load file system
-	//gins.LoadFileSystem()
+	gins.LoadFileSystem()
 
 	// Init http server, set your custom http server config
 	server := http.Server{
